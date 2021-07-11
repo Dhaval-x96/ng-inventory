@@ -1,0 +1,284 @@
+<ng-template #modal>
+  <ng-content select="[right]"></ng-content>
+  <hr>
+  <ng-content select="[left]"></ng-content>
+  
+  
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add Product</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="onSubmit()"
+    class="needs-validation"
+  >
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <ul class="list-group">
+            <li
+              *ngFor="let menu of menus; let i = index"
+              class="list-group-item"
+              (click)="onSelectMenu(menu.type)"
+            >
+              <a> {{ i + 1 }}: {{ menu.name }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-8 bg-black">
+          <ng-template [ngIf]="menuform === 'deviceInfo'">
+            <div formGroupName="deviceTypeInfo">
+              <h3>Select Device Type</h3>
+              <hr />
+              <div class="row info-div">
+                <div
+                  class="col-sm-6 text-center p-3"
+                  *ngFor="let deviceType of deviceTypes"
+                >
+                  <label>
+                    <input
+                      type="radio"
+                      name="type"
+                      [value]="deviceType.name"
+                      formControlName="type"
+                    />
+                    <i
+                      [class]="deviceType.icon + ' font-90'"
+                      aria-hidden="true"
+                    >
+                    </i>
+                  </label>
+                  <div>{{ deviceType.name }}</div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="menuform === 'basicInfo'">
+            <h3>Basic info</h3>
+            <hr />
+
+            <div class="info-div" formGroupName="basicInfo"> 
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="productName" class="form-label"
+                      >Product Name</label
+                    >
+                    <input
+                      type="text"
+                      name="productName"
+                      id="productName"
+                      class="form-control"
+                      formControlName="name"
+                      placeholder="Product Name"
+                      [ngClass]="{
+                        'is-valid':
+                          productForm.get('basicInfo.name')?.invalid == true
+                            ? false
+                            : true,
+                        'is-invalid':
+                          productForm.get('basicInfo.name')?.invalid &&
+                          productForm.get('basicInfo.name')?.dirty
+                            ? true
+                            : false
+                      }"
+                    />
+
+                    <div class="valid-feedback">Looks good!</div>
+                    <div
+                      *ngIf="productForm.get('basicInfo.name')?.errors?.required"
+                      class="invalid-feedback"
+                    >
+                      Please enter product name.
+                    </div>
+                    <div
+                      *ngIf="
+                        productForm.get('basicInfo.name')?.errors?.minlength &&
+                        productForm
+                          .get('basicInfo.name')
+                          ?.hasError('cannotContainSpace') ===
+                          false
+                      "
+                      class="invalid-feedback"
+                    >
+                      Product name should atleast of 3 character.
+                    </div>
+                    <div
+                      *ngIf="
+                        productForm.get('basicInfo.name')?.errors?.maxlength &&
+                        productForm
+                          .get('basicInfo.name')
+                          ?.errors?.hasOwnProperty('cannotContainSpace') ===
+                          false
+                      "
+                      class="invalid-feedback"
+                    >
+                      Product name should not excced of 20 character.
+                    </div>
+                    <div
+                      *ngIf="
+                        productForm.get('basicInfo.name')?.errors?.cannotContainSpace
+                      "
+                      class="invalid-feedback"
+                    >
+                      Unnecessary space is not allowed.
+                    </div>
+                    <small id="emailHelp" class="form-text text-muted">
+                      Enter unique name for the product.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      name="active"
+                      id="active"
+                      formControlName="active"
+                    />
+                    <label for="active" class="form-check-label">Active</label>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="productDescription" class="form-label"
+                      >Product Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      name="productDescription"
+                      id="productDescription"
+                      rows="5"
+                      formControlName="description"
+                      [ngClass]="{
+                        'is-valid':
+                          productForm.get('basicInfo.description')?.invalid == true
+                            ? false
+                            : true,
+                        'is-invalid':
+                          productForm.get('basicInfo.description')?.invalid &&
+                          productForm.get('basicInfo.description')?.dirty
+                            ? true
+                            : false
+                      }"
+                    ></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div
+                      *ngIf="productForm.get('basicInfo.description')?.errors?.required"
+                      class="invalid-feedback"
+                    >
+                      Please enter product description.
+                    </div>
+                    <div
+                      *ngIf="
+                        productForm.get('basicInfo.description')?.errors?.minlength &&
+                        productForm
+                          .get('basicInfo.description')
+                          ?.errors?.hasOwnProperty('cannotContainSpace') ===
+                          false
+                      "
+                      class="invalid-feedback"
+                    >
+                      Product description should atleast of 10 character.
+                    </div>
+                    <div
+                      *ngIf="
+                        productForm.get('basicInfo.description')?.errors
+                          ?.cannotContainSpace
+                      "
+                      class="invalid-feedback"
+                    >
+                      Unnecessary space is not allowed.
+                    </div>
+                    <small id="emailHelp" class="form-text text-muted">
+                      Enter a brief description of the product.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div formArrayName="features">
+                    <h6>Features</h6>
+                    <div class="form-group" *ngFor="let feature of getFeaturesControls(); let i=index">
+
+                      <div class="row">
+                        <div class="col-sm-8"> <input type="text" class="form-control" [formControlName]="i"></div>
+                        <div class="col-sm-4"> <button class="btn btn-danger" (click)="removeFeature(i)">X</button></div>
+                      </div>
+                     
+
+                    </div>
+                    <button class="btn btn-info" (click)="addFeatures()" type="button"> Add Feature</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="menuform === 'dateInfo'">
+            <h3>Expiration info</h3>
+            <hr />
+            <div class="row" formGroupName="dateInfo">
+              <div class="col-sm-7 form-group">
+                <input
+                  type="text"
+                  placeholder="Expiration Date"
+                  class="form-control"
+                  bsDatepicker
+                  #expirationDate
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  [minDate]="minDate"
+                  [maxDate]="maxDate"
+                  formControlName="expirationDate"
+                />
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" type="button" (click)="onClose()">
+        Cancel
+      </button>
+      <button
+        *ngIf="!saveButton"
+        class="btn btn-primary"
+        type="button"
+        (click)="onChangeMenu()"
+      >
+        Next
+      </button>
+      <button
+        class="btn btn-success"
+        [disabled]="productForm.invalid"
+        *ngIf="saveButton"
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+
+
+

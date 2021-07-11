@@ -1,0 +1,46 @@
+.font-90 {
+  font-size: 7.5rem;
+}
+
+
+/* icon behave like radio button */
+/* HIDE RADIO */
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + i {
+  cursor: pointer;
+  padding: 15px;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + i {
+  outline: 2px solid #A7C4BC;
+  border-bottom: 5px solid #A7C4BC;
+  padding: 15px;
+}
+/* icon behave like radio button */
+
+
+/* make the div scrollable  */
+.info-div {
+  position: relative;
+  margin-top: 15px;
+  z-index: 0;
+  height: 100%;
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+/* make the div scrollable  */
+
+/* Validation input change */
+// input.ng-invalid.ng-touched,
+// textarea.ng-invalid.ng-touched {
+//   border: 1px solid red;
+// }
